@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from itertools import product
 
 import io_hashcode
+from orientation import split, max_inter
 
 def num_tags(pics):
     tags = set()
@@ -56,6 +57,8 @@ def hist_pairwise(pics, name):
         pair2intersect.append(intersect_score(pic1, pic2))
         pair2total.append(pairwise_score(pic1, pic2))
 
+    print(sum(pair2total))
+
     fig, (ax_left, ax_right, ax_intersect, ax_total) = plt.subplots(ncols=4)
 
     ax_left.hist(pair2left, bins=range(35))
@@ -71,6 +74,8 @@ def hist_pairwise(pics, name):
     ax_left.set_ylabel(name)
     plt.show()
 
+
+
 def main():
     examples = {"a": "/home/jdw/Documents/2019/a_example.txt",
                 "b": "/home/jdw/Documents/2019/b_lovely_landscapes.txt",
@@ -79,6 +84,10 @@ def main():
                 "e": "/home/jdw/Documents/2019/e_shiny_selfies.txt"}
     name = "d"
     pics = io_hashcode.read(examples[name])
+    if 1:
+        verts, horzs = split(pics)
+        verts = max_inter(verts)
+        pics = verts + horzs
 
     #print(pics)
 

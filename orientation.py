@@ -43,10 +43,11 @@ def max_inter(verts):
     return new_verts
 
 
-from io_hashcode import read
-pics = read("/home/ju/Downloads/2019/a_example (copy).txt")
-verts, horts = split(pics)
-verts_ = naive_union(verts)
-print(verts_)
-verts_ = max_inter(verts)
-print(verts_)
+if __name__ == '__main__':
+    from io_hashcode import read
+    pics = read("/home/ju/Downloads/2019/a_example (copy).txt")
+    verts, horts = split(pics)
+    verts_ = naive_union(verts)
+    print(verts_)
+    verts_ = max_inter(verts)
+    print(verts_)
