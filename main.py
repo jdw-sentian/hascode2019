@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from itertools import product
 
 import io_hashcode
-from orientation import split, max_inter
+from orientation import split, min_inter, max_inter
 
 def num_tags(pics):
     tags = set()
@@ -86,7 +86,7 @@ def main():
     pics = io_hashcode.read(examples[name])
     if 1:
         verts, horzs = split(pics)
-        verts = max_inter(verts)
+        verts = min_inter(verts, cutoff=0)
         pics = verts + horzs
 
     #print(pics)
