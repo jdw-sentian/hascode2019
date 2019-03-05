@@ -1,3 +1,5 @@
+from itertools import islice
+
 def load_pics():
     pics = {}
     with open("a_example.txt") as f:
@@ -42,5 +44,42 @@ def calc_score(solution):
         print(score)
 
 
+def window(seq, n=2):
+    "Returns a sliding window (of width n) over data from the iterable"
+    "   s -> (s0,s1,...s[n-1]), (s1,s2,...,sn), ...                   "
+    it = iter(seq)
+    result = tuple(islice(it, n))
+    if len(result) == n:
+        yield result
+    for elem in it:
+        result = result[1:] + (elem,)
+        yield result
+
+
+def score_pics(pics):
+    score = 0
+    for a, b in window(pics):
+        a_not_b = len(a[2] - b[2])
+        a_and_b = len(a[2] & b[2])
+        b_not_a = len(b[2] - a[2])
+        score += min(a_not_b, a_and_b, b_not_a)
+
+    return score
+
+
 if __name__ == "__main__":
-    calc_score([[0], [3], [1, 2]])
+    # calc_score([[0], [3], [1, 2]])
+    from io_hashcode import read
+    from orientation import split, max_inter
+    from jualg import rand
+
+    pics = read("/home/ju/Downloads/2019/c_memorable_moments.txt")
+    verts, horts = split(pics)
+    verts = max_inter(verts)
+    pics = verts + horts
+    scores = set()
+    for _ in range(1000):
+        pics = rand(pics)
+        score = score_pics(pics)
+        scores.add(score)
+    print(max(scores))
