@@ -65,10 +65,32 @@ def score_pair(a, b):
 
 
 def score_pics(pics):
+    error_pic = validate_slides(pics)
+    if error_pic:
+        raise Exception("LIST IS NOT VALID!", error_pic)
     score = 0
     for a, b in window(pics):
         score += score_pair(a, b)
     return score
+
+
+def validate_slides(pics):
+    found = set()
+    for pic in pics:
+        if pic[1] == "V" and len(pic[0]) != 2:
+            return pic
+        elif pic[1] == "V":
+            if pic[0][0] in found:
+                return pic
+            found.add(pic[0][0])
+            if pic[0][1] in found:
+                return pic
+            found.add(pic[0][1])
+        else:
+            if pic[0][0] in found:
+                return pic
+            found.add(pic[0][0])
+    return False
 
 
 if __name__ == "__main__":
@@ -77,7 +99,7 @@ if __name__ == "__main__":
     from orientation import split, max_inter, min_inter
     from jualg import rand, change_break
 
-    pics = read("/home/ju/Downloads/2019/a_example.txt")
+    pics = read("/home/ju/Downloads/2019/c_memorable_moments.txt")
     verts, horts = split(pics)
     verts = min_inter(verts)
     pics = verts + horts
