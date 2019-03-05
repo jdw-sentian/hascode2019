@@ -17,5 +17,16 @@ def change_break(pics):
             lowest_score = score
         if lowest_score == 0:
             break
-    pics[current_break[1]:] + pics[:current_break[0]]
+    pics = pics[current_break[1]:] + pics[:current_break[0]+1]
     return pics
+
+
+if __name__ == "__main__":
+    from io_hashcode import read
+    from calc_score import score_pics
+    pics = read("/home/ju/Downloads/2019/a_example (copy).txt")
+    print(pics)
+    print(score_pics(pics))
+    pics = change_break(pics)
+    print(pics)
+    print(score_pics(pics))
