@@ -42,6 +42,7 @@ def max_inter(verts):
         new_verts.append((idx, orient, tags))
     return new_verts
 
+
 def min_inter(verts, cutoff=0):
     verts = verts.copy()
     new_verts = list()
