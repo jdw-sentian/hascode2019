@@ -42,4 +42,5 @@ def calc_score(solution):
         print(score)
 
 
-calc_score([[0], [3], [1, 2]])
+if __name__ == "__main__":
+    calc_score([[0], [3], [1, 2]])
