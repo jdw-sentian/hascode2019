@@ -9,6 +9,7 @@ from itertools import product
 
 import io_hashcode
 from orientation import split, min_inter, max_inter
+from calc_score import calc_score
 
 def num_tags(pics):
     tags = set()
@@ -74,7 +75,49 @@ def hist_pairwise(pics, name):
     ax_left.set_ylabel(name)
     plt.show()
 
+def pairing_score(seq1, seq2):
+    last1 = seq1[-1]
+    first2 = seq2[0]
 
+    return pairwise_score(last1, first2)
+
+def solve_max_combine(pics, init_cutoff=1):
+    cutoff = init_cutoff
+    sequences = [[pic] for pic in pics]
+
+    iter_since_join = 0
+    while len(sequences) > 1:
+        if iter_since_join >= 1000:
+            cutoff -= 1 # to guarantee termination
+
+        idx1 = np.random.randint(0, len(sequences))
+        idx2 = np.random.randint(0, len(sequences))
+
+        if idx1 == idx2:
+            continue
+
+        seq1 = sequences[idx1]
+        seq2 = sequences[idx2]
+
+        s = pairing_score(seq1, seq2)
+        if s >= cutoff:
+            seq = seq1 + seq2
+            try:
+                sequences.remove(seq1)
+                sequences.remove(seq2)
+            except Exception:
+                print(seq1)
+                print(seq2)
+                raise
+            sequences.append(seq)
+            iter_since_join = 0
+        else:
+            iter_since_join += 1
+
+    return sequences[0]
+
+def total_score(sequence):
+    return sum([pairwise_score(pic1, pic2) for pic1, pic2 in zip(sequence[:-1], sequence[1:])])
 
 def main():
     examples = {"a": "/home/jdw/Documents/2019/a_example.txt",
@@ -82,7 +125,7 @@ def main():
                 "c": "/home/jdw/Documents/2019/c_memorable_moments.txt",
                 "d": "/home/jdw/Documents/2019/d_pet_pictures.txt",
                 "e": "/home/jdw/Documents/2019/e_shiny_selfies.txt"}
-    name = "d"
+    name = "e"
     pics = io_hashcode.read(examples[name])
     if 1:
         verts, horzs = split(pics)
@@ -93,7 +136,12 @@ def main():
 
     #print(num_tags(pics))
     #hist_tags(pics, name)
-    hist_pairwise(pics, name)
+    #hist_pairwise(pics, name)
+
+    seq = solve_max_combine(pics, init_cutoff=30)
+    #print(seq)
+    #print(calc_score(seq))
+    print(total_score(seq))
 
 if __name__ == '__main__':
     main()

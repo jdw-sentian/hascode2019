@@ -55,6 +55,7 @@ def min_inter(verts, cutoff=0):
                 b = test_b
                 break
         else:
+            print("Warning!")
             continue
 
         verts.remove(b)
