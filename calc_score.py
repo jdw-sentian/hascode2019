@@ -1,5 +1,6 @@
 from itertools import islice
 
+
 def load_pics():
     pics = {}
     with open("a_example.txt") as f:
@@ -74,15 +75,15 @@ if __name__ == "__main__":
     # calc_score([[0], [3], [1, 2]])
     from io_hashcode import read
     from orientation import split, max_inter, min_inter
-    from jualg import rand
+    from jualg import rand, change_break
 
-    pics = read("/home/ju/Downloads/2019/c_memorable_moments.txt")
+    pics = read("/home/ju/Downloads/2019/a_example.txt")
     verts, horts = split(pics)
     verts = min_inter(verts)
     pics = verts + horts
-    scores = set()
-    for _ in range(1000):
-        pics = rand(pics)
-        score = score_pics(pics)
-        scores.add(score)
-    print(max(scores))
+    pics = rand(pics)
+    score = score_pics(pics)
+    print(score)
+    pics = change_break(pics)
+    score = score_pics(pics)
+    print(score)
