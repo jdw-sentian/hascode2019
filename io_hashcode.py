@@ -6,5 +6,5 @@ def read(filename):
             line = line.split()
             orientation = line[0]
             tags = set(line[2:])
-            pics.append((ix, orientation, tags))
+            pics.append(((ix,), orientation, tags))
     return pics
