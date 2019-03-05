@@ -1,5 +1,6 @@
 import random
 from calc_score import score_pair, window
+from orientation import split, _min_inter
 
 
 def rand(pics):
@@ -21,12 +22,60 @@ def change_break(pics):
     return pics
 
 
+def next_is_best(pics, max_score=2**20):
+    pics = pics.copy()
+    verts, _ = split(pics)
+    pic = pics[0]
+    new_pics = []
+    flag = True
+
+    while pics:
+        new_pics.append(pic)
+        try:
+            pics.remove(pic)
+        except ValueError:
+            pass
+        if flag and pic[1] == "V":
+            flag = False
+            verts.remove(pic)
+            if not verts:
+                new_pics.pop()
+                break
+            other = _min_inter(pic, verts)
+            verts.remove(other)
+            pics.remove(other)
+            idx = (pic[0][0], other[0][0])
+            orient = pic[1]
+            tags = pic[2] | other[2]
+            pic = (idx, orient, tags)
+            if new_pics:
+                new_pics.pop()
+        else:
+            flag = True
+            score = 0
+            best_other = None
+            for other in pics:
+                tmp_score = score_pair(pic, other)
+                if best_other is None or tmp_score > score:
+                    score = tmp_score
+                    best_other = other
+                if score >= max_score:
+                    break
+            pic = best_other
+
+    return new_pics
+
+
 if __name__ == "__main__":
     from io_hashcode import read
     from calc_score import score_pics
-    pics = read("/home/ju/Downloads/2019/a_example (copy).txt")
-    print(pics)
-    print(score_pics(pics))
-    pics = change_break(pics)
-    print(pics)
-    print(score_pics(pics))
+    picss = [
+        # read("/home/ju/Downloads/2019/a_example.txt"),
+        # read("/home/ju/Downloads/2019/b_lovely_landscapes.txt"),
+        # read("/home/ju/Downloads/2019/c_memorable_moments.txt"),
+        read("/home/ju/Downloads/2019/d_pet_pictures.txt"),
+        # read("/home/ju/Downloads/2019/e_shiny_selfies.txt"),
+    ]
+    for pics in picss:
+        pics = next_is_best(pics)
+        print(score_pics(pics))
