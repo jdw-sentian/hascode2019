@@ -43,21 +43,24 @@ def max_inter(verts):
     return new_verts
 
 
+def _min_inter(a, verts, cutoff=0):
+    b = None
+    for test_b in verts:
+        size_i = len(a[2] & test_b[2])
+        if b is None or size_i <= cutoff:
+            b = test_b
+            break
+        else:
+            continue
+    return b
+
+
 def min_inter(verts, cutoff=0):
     verts = verts.copy()
     new_verts = list()
     while verts:
         a = verts.pop()
-
-        b = None
-        for test_b in verts:
-            size_i = len(a[2] & test_b[2])
-            if size_i <= cutoff:
-                b = test_b
-                break
-        else:
-            continue
-
+        b = _min_inter(a, verts)
         verts.remove(b)
         idx = (a[0][0], b[0][0])
         orient = a[1]
@@ -68,9 +71,9 @@ def min_inter(verts, cutoff=0):
 
 if __name__ == '__main__':
     from io_hashcode import read
-    pics = read("/home/ju/Downloads/2019/a_example (copy).txt")
+    pics = read("/home/ju/Downloads/2019/a_example.txt")
     verts, horts = split(pics)
     verts_ = naive_union(verts)
     print(verts_)
-    verts_ = max_inter(verts)
+    verts_ = min_inter(verts)
     print(verts_)
