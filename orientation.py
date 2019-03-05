@@ -51,6 +51,7 @@ def _min_inter(a, verts, cutoff=0):
             b = test_b
             break
         else:
+            print("Warning!")
             continue
     return b
 
