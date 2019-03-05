@@ -56,26 +56,29 @@ def window(seq, n=2):
         yield result
 
 
+def score_pair(a, b):
+    a_not_b = len(a[2] - b[2])
+    a_and_b = len(a[2] & b[2])
+    b_not_a = len(b[2] - a[2])
+    return min(a_not_b, a_and_b, b_not_a)
+
+
 def score_pics(pics):
     score = 0
     for a, b in window(pics):
-        a_not_b = len(a[2] - b[2])
-        a_and_b = len(a[2] & b[2])
-        b_not_a = len(b[2] - a[2])
-        score += min(a_not_b, a_and_b, b_not_a)
-
+        score += score_pair(a, b)
     return score
 
 
 if __name__ == "__main__":
     # calc_score([[0], [3], [1, 2]])
     from io_hashcode import read
-    from orientation import split, max_inter
+    from orientation import split, max_inter, min_inter
     from jualg import rand
 
     pics = read("/home/ju/Downloads/2019/c_memorable_moments.txt")
     verts, horts = split(pics)
-    verts = max_inter(verts)
+    verts = min_inter(verts)
     pics = verts + horts
     scores = set()
     for _ in range(1000):
