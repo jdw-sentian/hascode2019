@@ -19,20 +19,25 @@ def naive_union(verts):
     return new_verts
 
 
+def _max_inter(a, verts):
+    max_i = None
+    b = None
+    for test_b in verts:
+        size_i = len(a[2] & test_b[2])
+        if b is None or size_i > max_i:
+            b = test_b
+            max_i = size_i
+    return b
+
+
 def max_inter(verts):
     verts = verts.copy()
     new_verts = list()
     while verts:
         a = verts.pop()
-
-        max_i = None
-        b = None
-        for test_b in verts:
-            size_i = len(a[2] & test_b[2])
-            if b is None or size_i > max_i:
-                b = test_b
-                max_i = size_i
+        b = _max_inter(a, verts)
         if b is None:
+            print("Warning!")
             continue
 
         verts.remove(b)
@@ -50,9 +55,6 @@ def _min_inter(a, verts, cutoff=0):
         if b is None or size_i <= cutoff:
             b = test_b
             break
-        else:
-            print("Warning!")
-            continue
     return b
 
 
@@ -62,6 +64,9 @@ def min_inter(verts, cutoff=0):
     while verts:
         a = verts.pop()
         b = _min_inter(a, verts)
+        if b is None:
+            print("Warning!")
+            continue
         verts.remove(b)
         idx = (a[0][0], b[0][0])
         orient = a[1]
@@ -77,4 +82,6 @@ if __name__ == '__main__':
     verts_ = naive_union(verts)
     print(verts_)
     verts_ = min_inter(verts)
+    print(verts_)
+    verts_ = max_inter(verts)
     print(verts_)
