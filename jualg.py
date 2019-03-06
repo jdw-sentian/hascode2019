@@ -71,16 +71,17 @@ if __name__ == "__main__":
     from calc_score import score_pics
     from time import time
     picss = [
-        read("../2019/a_example.txt"),
-        read("../2019/b_lovely_landscapes.txt"),
-        read("../2019/c_memorable_moments.txt"),
-        read("../2019/d_pet_pictures.txt"),
-        read("../2019/e_shiny_selfies.txt"),
+        read("data/a_example.txt"),
+        # read("data/b_lovely_landscapes.txt"),
+        read("data/c_memorable_moments.txt"),
+        # read("data/d_pet_pictures.txt"),
+        # read("data/e_shiny_selfies.txt"),
     ]
     start = time()
     sum_score = 0
     for pics in picss:
         im = time()
+        pics = sorted(pics, key=lambda pic: len(pic[2]))
         pics = next_is_best(pics)
         pics = change_break(pics)
         score = score_pics(pics)
@@ -88,6 +89,6 @@ if __name__ == "__main__":
         print(score)
         print(time() - im)
         print('-'*80)
+    print("total:")
     print(sum_score)
     print(time()-start)
-
