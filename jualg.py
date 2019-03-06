@@ -69,13 +69,25 @@ def next_is_best(pics, max_score=2**20):
 if __name__ == "__main__":
     from io_hashcode import read
     from calc_score import score_pics
+    from time import time
     picss = [
-        # read("/home/ju/Downloads/2019/a_example.txt"),
-        # read("/home/ju/Downloads/2019/b_lovely_landscapes.txt"),
-        # read("/home/ju/Downloads/2019/c_memorable_moments.txt"),
-        read("/home/ju/Downloads/2019/d_pet_pictures.txt"),
-        # read("/home/ju/Downloads/2019/e_shiny_selfies.txt"),
+        read("../2019/a_example.txt"),
+        read("../2019/b_lovely_landscapes.txt"),
+        read("../2019/c_memorable_moments.txt"),
+        read("../2019/d_pet_pictures.txt"),
+        read("../2019/e_shiny_selfies.txt"),
     ]
+    start = time()
+    sum_score = 0
     for pics in picss:
+        im = time()
         pics = next_is_best(pics)
-        print(score_pics(pics))
+        pics = change_break(pics)
+        score = score_pics(pics)
+        sum_score += score
+        print(score)
+        print(time() - im)
+        print('-'*80)
+    print(sum_score)
+    print(time()-start)
+
