@@ -64,10 +64,11 @@ def score_pair(a, b):
     return min(a_not_b, a_and_b, b_not_a)
 
 
-def score_pics(pics):
-    error_pic = validate_slides(pics)
-    if error_pic:
-        raise Exception("LIST IS NOT VALID!", error_pic)
+def score_pics(pics, *, validate=True):
+    if validate:
+        error_pic = validate_slides(pics)
+        if error_pic:
+            raise Exception("LIST IS NOT VALID!", error_pic)
     score = 0
     for a, b in window(pics):
         score += score_pair(a, b)
